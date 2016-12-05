@@ -62,10 +62,13 @@ open Part4
 
 let elizaHandler = request (fun req -> 
   let question = parseRequest req
-  let answer = "You said '" + question.Text + "'. Are you sure?"
   // TODO: Let Eliza answer the query!
   // (use 'getAnswer' function as you did in '4_Eliza.fsx')
-  Successful.OK(makeResponse answer) )
+  let resp = question.Text |> getInput |> getAnswer phrases 
+  match resp with
+  | Some r -> Successful.OK(makeResponse r)
+  | _ ->  Successful.OK(makeResponse "On the other hand, you have different fingers.")
+  )
 
 let app = 
   choose [
